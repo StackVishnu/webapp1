@@ -1,7 +1,7 @@
-
+let productId
 document.addEventListener("DOMContentLoaded", function (){
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    productId = urlParams.get('id');
     const role = urlParams.get('role');
     console.log(productId);
     
@@ -25,4 +25,31 @@ document.addEventListener("DOMContentLoaded", function (){
         })
         .catch(error => console.error('Error fetching product data:', error));
 });
+function edit(){
+    const form = document.getElementById("add-form");
+        const formData = new FormData(form);
+        const mid = parseInt(productId)
+        formData.append('mid', productId)
+        console.log("test"+formData)
+        event.preventDefault()
+    fetch(`http://localhost:9090/edit`,{
+        method : "PUT",
+        body : formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert("Product edited successfully")
+        window.location.href = "admin.html"
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error during form submission:", error);
+    });
+}
+
 
