@@ -21,7 +21,7 @@ func Search(db *sql.DB) http.HandlerFunc {
 		}
 		fmt.Printf("Received search key: %s\n", searchKey.Key)
 
-		qry := `SELECT * FROM products WHERE name LIKE '%' || $1 || '%'`
+		qry := `SELECT * FROM products WHERE name ILIKE $1 || '%'`
 
 		rows, err := db.Query(qry, searchKey.Key)
 		if err != nil {

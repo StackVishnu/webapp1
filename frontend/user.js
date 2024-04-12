@@ -26,8 +26,10 @@ function createCard(el, container) {
     card.innerHTML = `
     <img src="${el.path}" class="card-img-top img-fluid" alt="Phone Image"> 
     <div class="card-body mt-auto flex-grow-1 row align-items-end">
-        <h5 class="card-title font-weight-bold text-dark">${el.mName}</h5>
-        <a href="detailedview.html?id=${el.mid}&role=user" class="btn btn-dark btn-sm mt-2">VIEW</a> <!-- Adjusted button size and margin -->
+        <a href="detailedview.html?id=${el.mid}&role=admin" class="btn btn-dark btn-sm mt-2">VIEW</a> <!-- Adjusted button size and margin -->
+    </div>
+    <div card-body mt-auto flex-grow-1 row align-items-end>
+    <h5 class="card-title font-weight-bold text-dark">${el.mName}</h5>
     </div>
     `;
     container.appendChild(card)

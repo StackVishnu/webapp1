@@ -25,7 +25,7 @@ func ViewAll(db *sql.DB) http.HandlerFunc {
 			}
 			mobiles = append(mobiles, mob)
 		}
-		// fmt.Fprintf(w, "the slice has %v", mobiles)
+
 		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(mobiles)
 		if err != nil {

@@ -24,9 +24,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const role = urlParams.get('role');
 const id = urlParams.get('id')
 const card = document.createElement("div")
-card.classList.add("card", "text-center", "mt-3", "shadow", "p-3", "bg-body", "rounded", "col-md-12","border-3","border-dark");
+card.classList.add("card", "text-center", "mt-3", "shadow", "bg-body", "rounded", "col-md-12","border-3","border-dark");
 let htmlcontent = `
-            <div class="card-body max-width:">
+            <div class="card-body">
             <div class="card-body d-flex justify-content-center align-items-center">
                 <img src="${el.path}" class="card-img-top img-fluid" alt="...>
             </div>

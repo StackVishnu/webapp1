@@ -12,7 +12,7 @@ import (
 func main() {
 	db := dbconn.Dbconnect()
 	r := routers.Routes(db)
-
+	// var store = sessions.NewCookieStore([]byte("your-secret-key"))
 	c := cors.New(
 		cors.Options{
 			AllowedOrigins: []string{"*"},
@@ -24,3 +24,14 @@ func main() {
 	http.ListenAndServe(":9090", handler)
 
 }
+
+// func Middleware(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+//         if r.URL.Path != "/login" {
+
+//         }
+
+//         next.ServeHTTP(w, r)
+// 	})
+// }

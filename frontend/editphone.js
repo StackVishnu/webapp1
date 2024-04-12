@@ -28,13 +28,12 @@ document.addEventListener("DOMContentLoaded", function (){
 function updateProduct(event) {
     event.preventDefault();
 
-    // Obtain all form data
     const phoneName = document.getElementById('phone_name').value;
     const specs = document.getElementById('specs').value;
     const price = document.getElementById('price').value;
     const imageFile = document.getElementById('image').files[0];
 
-    // Create FormData object
+
     const formData = new FormData();
     formData.append('phone_name', phoneName);
     formData.append('specs', specs);
@@ -42,17 +41,16 @@ function updateProduct(event) {
     formData.append('image', imageFile);
     formData.append('mid', productId);
 
-    // Assuming the API endpoint for updating the product is '/edit'
     fetch('http://localhost:9090/edit', {
         method: 'POST',
-        body: formData // Send FormData for form data upload
+        body: formData 
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // Redirect to home page after successful update
-        window.location.href = 'admin.html'; // Update with your home page URL
+   
+        window.location.href = 'admin.html'; 
     })
     .catch(error => {
         console.error('Error updating product:', error);
@@ -60,6 +58,6 @@ function updateProduct(event) {
             console.log("Error message:", error.message);
             console.log("Error stack trace:", error.stack);
             alert("Error editing product. Please try again later.");
-        // Handle error if needed
+
     });
 }

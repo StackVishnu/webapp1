@@ -7,6 +7,7 @@ import (
 	"webapp/structures"
 )
 
+// login page is at http://127.0.0.1:5500/frontend/ (if live @ 5500)
 func Login(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var user structures.User

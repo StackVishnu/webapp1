@@ -32,13 +32,11 @@ func Insert(db *sql.DB) http.HandlerFunc {
 }
 
 func parseForm(r *http.Request, mob *structures.Mobile) error {
-	err := r.ParseMultipartForm(10 << 20)
-	if err != nil {
-		return err
-	}
+
 	mob.Name = r.FormValue("phone_name")
 	mob.Specs = r.FormValue("specs")
-	mob.Price, err = strconv.Atoi(r.Form.Get("price"))
+	price, err := strconv.Atoi(r.Form.Get("price"))
+	mob.Price = price
 	return err
 }
 
@@ -48,7 +46,7 @@ func saveFile(r *http.Request, mob *structures.Mobile) error {
 		return err
 	}
 	defer file.Close()
-	mob.Ipath = "assets/" + header.Filename // Set the image path in the mobile struct
+	mob.Ipath = "assets/" + header.Filename // Only images in the assets folder can be uploaded
 	return nil
 }
 
