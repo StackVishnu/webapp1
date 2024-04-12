@@ -9,7 +9,7 @@ import (
 
 func Routes(db *sql.DB) *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/insert", controllers.Insert(db)).Methods("POST")
+	r.HandleFunc("/insert", controllers.Insert(db))
 	r.HandleFunc("/delete", controllers.Delete(db))
 	r.HandleFunc("/viewAll", controllers.ViewAll(db))
 	r.HandleFunc("/edit", controllers.Edit(db))

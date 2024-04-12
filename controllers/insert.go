@@ -2,66 +2,58 @@ package controllers
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"strconv"
 	"webapp/structures"
 )
 
 func Insert(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		var mob structures.Mobile
-
-		err := r.ParseMultipartForm(10 << 20)
-		if err != nil {
-			http.Error(w, "Error parsing form data", http.StatusBadRequest)
-			return
-		}
-		mob.Name = r.Form.Get("phone_name")
-		mob.Price, err = strconv.Atoi(r.Form.Get("price"))
-		if err != nil {
-			http.Error(w, "Error parsing phone price", http.StatusBadRequest)
-			return
-		}
-		mob.Specs = r.Form.Get("specs")
-
-		file, header, err := r.FormFile("image")
-		if err != nil {
-			http.Error(w, "Error retrieving image file", http.StatusBadRequest)
-			return
-		}
-		defer file.Close()
-
-		// Save the file to your desired location
-		out, err := os.Create("./frontend/assets/" + header.Filename)
-		if err != nil {
-			http.Error(w, "Error creating file: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		defer out.Close()
-
-		_, err = io.Copy(out, file)
-		if err != nil {
-			http.Error(w, "Error copying file", http.StatusBadRequest)
+		if err := parseForm(r, &mob); err != nil {
+			errHandl(w, err, "Error parsing form data", http.StatusBadRequest)
 			return
 		}
 
-		mob.Ipath = "assets/" + header.Filename
-
-		qry := `INSERT INTO products ("name", "specs", "price", "image_url") VALUES ($1, $2, $3, $4)`
-		_, err = db.Exec(qry, mob.Name, mob.Specs, mob.Price, mob.Ipath)
-		if err != nil {
-			http.Error(w, "error inserting data"+err.Error(), http.StatusInternalServerError)
+		if err := saveFile(r, &mob); err != nil {
+			errHandl(w, err, "Error saving file", http.StatusBadRequest)
+			return
 		}
-		fmt.Printf("%v", mob)
-		jsonData, _ := json.Marshal(mob)
+
+		if err := insertIntoDB(db, mob); err != nil {
+			errHandl(w, err, "Error inserting data", http.StatusInternalServerError)
+			return
+		}
+
 		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-
+		fmt.Fprintf(w, "Product inserted successfully")
 	}
+}
+
+func parseForm(r *http.Request, mob *structures.Mobile) error {
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		return err
+	}
+	mob.Name = r.FormValue("phone_name")
+	mob.Specs = r.FormValue("specs")
+	mob.Price, err = strconv.Atoi(r.Form.Get("price"))
+	return err
+}
+
+func saveFile(r *http.Request, mob *structures.Mobile) error {
+	file, header, err := r.FormFile("image")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	mob.Ipath = "assets/" + header.Filename // Set the image path in the mobile struct
+	return nil
+}
+
+func insertIntoDB(db *sql.DB, mob structures.Mobile) error {
+	qry := `INSERT INTO products (name, specs, price, image_url) VALUES ($1, $2, $3, $4)`
+	_, err := db.Exec(qry, mob.Name, mob.Specs, mob.Price, mob.Ipath)
+	return err
 }

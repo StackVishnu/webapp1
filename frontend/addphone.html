@@ -7,36 +7,40 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container-md center ">
+    <div class="container-md">
         <div class="row justify-content-center">
-            <h1>Add Phone</h1>
-    <form class="add-form" id="add-form" method="post">
-        <div class="form-group">
-            <label for="phone_name">Phone Name:</label>
-            <input type="text" class="form-control" id="phone_name" name="phone_name" required>
+            <div class="col-md-6">
+                <div class="card shadow mt-5 border border-3 border-primary">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">ADD PHONE</h1>
+                        <form class="add-form" id="add-form" method="post">
+                            <div class="form-group">
+                                <label for="phone_name">Phone Name:</label>
+                                <input type="text" class="form-control" id="phone_name" name="phone_name" required>
+                            </div>
+                    
+                            <div class="form-group">
+                                <label for="specs">Specs</label>
+                                <input type="text" class="form-control" id="specs" name="specs" required>
+                            </div>
+                    
+                            <div class="form-group">
+                                <label for="price">Price:</label>
+                                <input type="number" class="form-control" id="price" name="price" required>
+                            </div>
+                    
+                            <div class="form-group m-1">
+                                <label for="image">Upload Image:</label>
+                                <input type="file" class="form-control-file" id="image" name="image">
+                            </div>
+                    
+                            <button type="submit" class="btn btn-primary btn-block" onclick="insert(event)">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="specs">Specs</label>
-            <input type="text" class="form-control" id="specs" name="specs" required>
-        </div>
-
-        <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" class="form-control" id="price" name="price" required>
-        </div>
-
-        <div class="form-group">
-            <label for="image">Upload Image:</label>
-            <input type="file" class="form-control-file" id="image" name="image">
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
-    </form>
-        </div>
-        </div>
-
-
+    </div>
     <script src="addphone.js">
     </script>
 </body>

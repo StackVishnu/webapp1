@@ -29,7 +29,6 @@ func Delete(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		// Delete user
 		qry = `DELETE FROM products WHERE id = $1`
 		_, err = db.Exec(qry, mob.ID)
 		if err != nil {

@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function (){
             return response.json();
         })
         .then(data => {
-            if (data.length > 0) { // Check if data is not empty
-                const product = data[0]; // Assuming there's only one product returned
+            if (data.length > 0) {
+                const product = data[0]; 
 
                 document.getElementById('phone_name').value = product.mName;
                 document.getElementById('specs').value = product.mSpecs;
@@ -23,36 +23,43 @@ document.addEventListener("DOMContentLoaded", function (){
                 console.error('No data found');
             }
         })
-        .catch(error => console.error('Error fetching product data:', error));
+        .catch(error => alert("alert"));
 });
-function edit(){
-    const form = document.getElementById("add-form");
-        const formData = new FormData(form);
-        const mid = productId
-        console.log("test"+productId)
-        formData.append("mid", productId)
-        console.log("test"+formData)
-        event.preventDefault()
-    fetch(`http://localhost:9090/edit`,{
-        method : "PUT",
-        body : formData
+function updateProduct(event) {
+    event.preventDefault();
+
+    // Obtain all form data
+    const phoneName = document.getElementById('phone_name').value;
+    const specs = document.getElementById('specs').value;
+    const price = document.getElementById('price').value;
+    const imageFile = document.getElementById('image').files[0];
+
+    // Create FormData object
+    const formData = new FormData();
+    formData.append('phone_name', phoneName);
+    formData.append('specs', specs);
+    formData.append('price', price);
+    formData.append('image', imageFile);
+    formData.append('mid', productId);
+
+    // Assuming the API endpoint for updating the product is '/edit'
+    fetch('http://localhost:9090/edit', {
+        method: 'POST',
+        body: formData // Send FormData for form data upload
     })
     .then(response => {
         if (!response.ok) {
-            alert("Provide Image also")
-            console.log(formData)
-            throw new Error("Network response was not ok");
+            throw new Error('Network response was not ok');
         }
-        return response.json();
-        console.log(response)
+        // Redirect to home page after successful update
+        window.location.href = 'admin.html'; // Update with your home page URL
     })
-    .then(data => {
-        alert("inserted")
-        window.location.href = "admin.html"
-        console.log(data);
-      })
     .catch(error => {
-        console.error("Error during form submission:", error);
+        console.error('Error updating product:', error);
+        console.log("Error name:", error.name);
+            console.log("Error message:", error.message);
+            console.log("Error stack trace:", error.stack);
+            alert("Error editing product. Please try again later.");
+        // Handle error if needed
     });
 }
-
